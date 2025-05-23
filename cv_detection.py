@@ -1,8 +1,8 @@
 import matplotlib.pylab as plt
 import cv2
 import numpy as np
-from PerspectiveTransformation import PerspectiveTransformation
-from Thresholding import Thresholding
+from cv_utils.PerspectiveTransformation import PerspectiveTransformation
+from cv_utils.Thresholding import Thresholding
 
 # global variables for line tracking
 prev_left = None
