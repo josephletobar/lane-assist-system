@@ -267,7 +267,7 @@ def process(image):
 
 # For video processing
 test_video = "test1"
-cap = cv2.VideoCapture(f'data/{test_video}.mp4')
+cap = cv2.VideoCapture(f'test_videos/{test_video}.mp4')
 
 while(cap.isOpened()):
     ret, frame = cap.read()
