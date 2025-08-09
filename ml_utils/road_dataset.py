@@ -4,7 +4,10 @@ from torch.utils.data import Dataset
 import torchvision.transforms as T
 
 class LaneDataset(Dataset):
-    def __init__(self, image_dir, mask_dir, size=(256, 256)):
+    def __init__(self, image_dir, mask_dir, size=(640, 360)):
+        # BDD100K images are 1280x720.
+        # Use (1280, 720) for full quality or a smaller 16:9 size
+        # (e.g., 960, 540 or 640, 360) if limited by compute.
         self.image_dir = image_dir 
         self.mask_dir = mask_dir
 

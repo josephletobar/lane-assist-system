@@ -9,23 +9,23 @@ from ml_utils.deeplab.deeplab_model import get_deeplab_model
 # Load model 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-weights = "road_deeplab_model" 
-
-# model = UNet()  # initialize UNet model
-model = get_deeplab_model(num_classes=1, device=device)  # initialize DeepLab model
-
-model.load_state_dict(torch.load(f"ml_utils/weights/{weights}.pth", map_location=device))
-model.to(device)
-model.eval()
+def load_model(weights, num_classes=1, device=device):
+    model = get_deeplab_model(num_classes=num_classes, device=device)  # initialize DeepLab model
+    model.load_state_dict(torch.load(f"ml_utils/weights/{weights}.pth", map_location=device))
+    model.to(device)
+    model.eval()
+    return model
 
 # Transform 
 transform = T.Compose([
-    T.Resize((256, 256)),
+    T.Resize((640, 360)),
     T.ToTensor(),
 ])
 
 # Predict function
-def deeplab_predict(input_data):
+def deeplab_predict(input_data, weights):
+    model = load_model(weights)
+
     if isinstance(input_data, str):  # filepath
         image = Image.open(input_data).convert("RGB")
     elif isinstance(input_data, np.ndarray):  # numpy array (BGR from OpenCV)

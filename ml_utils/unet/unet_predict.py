@@ -9,23 +9,22 @@ from ml_utils.unet.unet_model import UNet
 # Load model 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-weights = "road_unet_model" 
-
-model = UNet()  # initialize UNet model
-# model = get_deeplab_model(num_classes=1, device=device)  # initialize DeepLab model
-
-model.load_state_dict(torch.load(f"ml_utils/weights/{weights}.pth", map_location=device))
-model.to(device)
-model.eval()
+def load_model(weights):
+    model = UNet()  # initialize UNet model
+    model.load_state_dict(torch.load(f"ml_utils/weights/{weights}.pth", map_location=device))
+    model.to(device)
+    model.eval()
 
 # Transform 
 transform = T.Compose([
-    T.Resize((256, 256)),
+    T.Resize((640, 360)),
     T.ToTensor(),
 ])
 
 # Predict function
-def unet_predict(input_data):
+def unet_predict(input_data, weights):
+    model = load_model(weights)
+
     if isinstance(input_data, str):  # filepath
         image = Image.open(input_data).convert("RGB")
     elif isinstance(input_data, np.ndarray):  # numpy array (BGR from OpenCV)
