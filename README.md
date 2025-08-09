@@ -5,15 +5,15 @@ A lane detection system built for deployment in an RV, assisting with real-time 
 - **Traditional CV Mode**  
   Uses OpenCV techniques like Canny edge detection, perspective transforms, and Hough lines for efficient lane detection.
 
-  <p style="text-align:center;">
-    <video src="assets/cv.mp4" width="600" autoplay loop muted playsinline></video>
+  <p align="center">
+    <img src="assets/cv.gif" width="600">
   </p>
 
 - **Deep Learning Mode**  
   Uses U-Net or DeepLab models to generate segmentation masks for more robust lane detection if sufficient power and compute is available.
 
-  <p style="text-align:center;">
-    <video src="assets/dl.mp4" width="600" autoplay loop muted playsinline></video>
+  <p align="center">
+    <img src="assets/dl.gif" width="600">
   </p>
 
 ## Project Structure
