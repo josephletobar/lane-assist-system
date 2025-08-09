@@ -8,7 +8,7 @@ from cv_utils.Thresholding import Thresholding
 prev_left = None
 prev_right = None
 
-def filter_outliers(lines, z_thresh=2.0):
+def filter_outliers(lines, z_thresh=1.0):
     if len(lines) < 2:
         return lines
 
@@ -32,6 +32,31 @@ def filter_outliers(lines, z_thresh=2.0):
     # Keep lines within z-score threshold
     filtered = [d[:4] for d in line_data if abs((d[4] - mean) / std) <= z_thresh]
     return filtered
+
+def average_lines(lines):
+    slopes = []
+    intercepts = []
+    for x1, y1, x2, y2 in lines:
+        if x2 != x1:  # avoid division by zero
+            slope = (y2 - y1) / (x2 - x1)
+            intercept = y1 - slope * x1
+            slopes.append(slope)
+            intercepts.append(intercept)
+
+    if not slopes:
+        return None  # no valid lines
+
+    avg_slope = np.mean(slopes)
+    avg_intercept = np.mean(intercepts)
+
+    # Pick two y-values to define the averaged line
+    y1 = 720  # bottom of frame
+    y2 = 400  # some height up
+
+    x1 = int((y1 - avg_intercept) / avg_slope)
+    x2 = int((y2 - avg_intercept) / avg_slope)
+
+    return (x1, y1, x2, y2)
 
 
 def draw_the_lines(img, lines):
@@ -77,7 +102,6 @@ def draw_the_lines(img, lines):
             if abs(slope) < 0.6:
                 continue  # skip horizontal or almost flat lines
 
-    
             # Use position to determine left/right
             avg_x = (x1 + x2) // 2
             
@@ -93,24 +117,13 @@ def draw_the_lines(img, lines):
 
                 cv2.line(blank_image, (x1, y1), (x2, y2), (0, 0, 255), 5)
         
-        # TODO: edit to average by slope and intercept instead of endpoints
 
         # DRAW averaged left line
         global prev_left
         left_lines = filter_outliers(left_lines)
         if left_lines:
-            x1s = [x1 for x1, y1, x2, y2 in left_lines]
-            y1s = [y1 for x1, y1, x2, y2 in left_lines]
-            x2s = [x2 for x1, y1, x2, y2 in left_lines]
-            y2s = [y2 for x1, y1, x2, y2 in left_lines]
-
-            avg_left = (
-                int(np.mean(x1s)),
-                int(np.mean(y1s)),
-                int(np.mean(x2s)),
-                int(np.mean(y2s))
-            )
-            curr_left = np.array(avg_left, dtype=np.float32)
+            avg_left = average_lines(left_lines)
+            curr_left = np.array(avg_left, dtype=np.float32) # convert to numpyarray
 
             # apply smoothing
             if prev_left is None:
@@ -142,17 +155,7 @@ def draw_the_lines(img, lines):
         global prev_right
         right_lines = filter_outliers(right_lines)
         if right_lines:
-            x1s = [x1 for x1, y1, x2, y2 in right_lines]
-            y1s = [y1 for x1, y1, x2, y2 in right_lines]
-            x2s = [x2 for x1, y1, x2, y2 in right_lines]
-            y2s = [y2 for x1, y1, x2, y2 in right_lines]
-
-            avg_right = (
-                int(np.mean(x1s)),
-                int(np.mean(y1s)),
-                int(np.mean(x2s)),
-                int(np.mean(y2s))
-            )
+            avg_right = average_lines(right_lines)
             curr_right = np.array(avg_right, dtype=np.float32)
 
             # apply smoothing
@@ -190,7 +193,7 @@ def draw_the_lines(img, lines):
     lane_center_x = (left_mid_x + right_mid_x) / 2
     
     lane_width_pixels = abs(right_mid_x - left_mid_x)
-    xm_per_pix = 3.7 / lane_width_pixels if lane_width_pixels != 0 else 0
+    xm_per_pix = 2.4 / lane_width_pixels if lane_width_pixels != 0 else 0
     
     offset_pixels = car_center_x - lane_center_x
     offset_meters = offset_pixels * xm_per_pix
