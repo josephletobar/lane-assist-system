@@ -27,12 +27,14 @@ def lane_assist(mask, frame, treshold_px = 80):
 
     if abs(lane_offset) <+ treshold_px: 
         status = "Good Lane Keeping"
+        color = (0, 255, 0)
     else:    
         status = "Bad Lane Keeping"
+        color = (0, 0, 255)
 
     offset = abs(lane_offset) # string for cv2 to display
 
-    return status, offset
+    return status, color, offset
 
 
 def post_processing(mask, frame):
@@ -54,22 +56,27 @@ def post_processing(mask, frame):
                                                                                # others to 0 (black) using binary thresdhold
 
     # Get lane assist information and display it
-    status, offset = lane_assist(mask_smoothed, frame) 
-    # cv2.putText( 
-    #     frame,
-    #     str(offset),
-    #     org=(10, 80),
-    #     fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-    #     fontScale=1,
-    #     color=(255, 255, 255),
-    #     thickness=2)
+    status, color, offset = lane_assist(mask_smoothed, frame) 
+
+    pixels_to_m = 3.7 / 1280  # ≈ 0.00289 m per px
+    offset_meters = offset * pixels_to_m
+
+    cv2.putText(
+        frame,
+        "Vehicle is {:.2f} m away from center".format(abs(offset_meters)),
+        org=(10, 100),
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale=0.66,
+        color=(255, 255, 255),
+        thickness=2)
+    
     cv2.putText(
         frame,
         status,
         org=(10, 50),
         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
         fontScale=1,
-        color=(255, 255, 255),
+        color=color,
         thickness=2)                                                                      
 
     # Blend with frame
