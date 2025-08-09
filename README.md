@@ -12,7 +12,6 @@ A lane detection system built for deployment in an RV, assisting with real-time 
 
 - `cv_detection.py` – OpenCV-based lane detection  
 - `dl_detection.py` – Deep learning-based segmentation  
-- `train.py` – Model training script  
 - `cv_utils/` – OpenCV-based image processsing
 - `ml_utils/` – Deep learning inference and training helpers  
 - `test_videos/` – Sample driving clips  
@@ -33,6 +32,8 @@ pip install -r requirements.txt
 ```
 
 ## Running
+
+> *This system is tuned for a specific RV camera setup. Other vehicles or cameras may require retraining or calibration for best results.*
 
 Run detection on a video:
 
