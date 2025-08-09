@@ -138,7 +138,7 @@ def draw_the_lines(img, lines):
             x_top = (y_top - y1) / slope + x1
             x_bottom = (y_bottom - y1) / slope + x1
 
-            cv2.line(blank_image, (int(x_top), int(y_top)), (int(x_bottom), int(y_bottom)), (0, 255, 0), 15)
+            cv2.line(blank_image, (int(x_top), int(y_top)), (int(x_bottom), int(y_bottom)), (0, 255, 0), 25)
 
         # Use previous if no new lines detected
         elif prev_left is not None:
@@ -171,7 +171,7 @@ def draw_the_lines(img, lines):
             x_top = (y_top - y1) / slope + x1
             x_bottom = (y_bottom - y1) / slope + x1
 
-            cv2.line(blank_image, (int(x_top), int(y_top)), (int(x_bottom), int(y_bottom)), (0, 255, 0), 15)
+            cv2.line(blank_image, (int(x_top), int(y_top)), (int(x_bottom), int(y_bottom)), (0, 255, 0), 25)
 
         # Use previous if no new lines detected
         elif prev_right is not None:

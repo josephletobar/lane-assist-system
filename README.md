@@ -16,6 +16,12 @@ A lane detection system built for deployment in an RV, assisting with real-time 
     <img src="assets/dl.gif" width="600">
   </p>
 
+## Tools & Technologies
+-	Languages: Python
+-	Libraries & Frameworks: OpenCV, PyTorch, NumPy, Matplotlib
+-	Models: U-Net, DeepLab
+-	Techniques: Canny edge detection, perspective transforms, Hough line detection, semantic segmentation
+
 ## Project Structure
 
 - `cv_detection.py` – OpenCV-based lane detection  
