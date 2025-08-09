@@ -7,6 +7,10 @@ A lane detection system built for deployment in an RV, assisting with real-time 
 
   ![Demo](assets/cv.gif)
 
+  <p style="text-align:center;">
+    <img src="assets/cv.gif" width="600">
+  </p>
+
 - **Deep Learning Mode**  
   Uses U-Net or DeepLab models to generate segmentation masks for more robust lane detection if sufficient power and compute is available.
 
