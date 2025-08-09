@@ -1,3 +1,4 @@
+import argparse
 import matplotlib.pylab as plt
 import cv2
 import numpy as np
@@ -5,12 +6,16 @@ from ml_utils.deeplab.deeplab_predict import deeplab_predict
 from ml_utils.unet.unet_predict import unet_predict
 from cv_utils.mask_post_processing import post_processing
 
+# Parse arguments
+parser = argparse.ArgumentParser(description="Lane Assist Video Processing")
+parser.add_argument("--video", type=str, required=True, help="Path to video file")
+args = parser.parse_args()
+
 # Load weights
 weights = "road_deeplab_model2"
 
 # For video processing
-test_video = "test1"
-cap = cv2.VideoCapture(f'test_videos/{test_video}.mp4')
+cap = cv2.VideoCapture(args.video)
 
 while(cap.isOpened()):
     ret, frame = cap.read()

@@ -69,7 +69,7 @@ def post_processing(mask, frame):
         org=(10, 50),
         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
         fontScale=1,
-        color=(0, 255, 0),
+        color=(255, 255, 255),
         thickness=2)                                                                      
 
     # Blend with frame
