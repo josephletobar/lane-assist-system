@@ -38,7 +38,15 @@ def deeplab_predict(input_data, weights):
     with torch.no_grad(): 
         output = model(input_tensor)['out'] # run the transformed image through the model 
                                             # DeepLab returns dict; use ['out']. UNet returns tensor directly.
-        pred_mask = (output.squeeze() > 0.5).float().cpu().numpy() # postprocessing
+        
+        # Convert model output to a binary NumPy mask:
+        # 1) squeeze: remove extra batch/channel dims [1,1,H,W] → [H,W]
+        # 2) > 0.5: threshold probabilities at 0.5; boolean mask
+        # 3) float(): convert booleans to 0.0 / 1.0
+        # 4) cpu(): move from GPU to CPU
+        # 5) numpy(): convert to NumPy array (float32, values in {0.0, 1.0})
+        pred_mask = (output.squeeze() > 0.5).float().cpu().numpy() 
+
 
     return image, pred_mask
 
