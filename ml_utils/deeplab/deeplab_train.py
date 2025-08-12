@@ -12,9 +12,6 @@ device = torch.device("cpu")
 dataset = LaneDataset("data/images", "data/masks")
 dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
 
-# # Initialize Unet model
-# model = UNet().to(device)
-
 # Initialize DeepLab model
 weights_path = "ml_utils/weights/berkeley_deeplab.pth" # Get Berkeley weights
 model = get_deeplab_model(num_classes=1, weights_path=weights_path, device=device)
