@@ -1,6 +1,8 @@
 # Lane Assist System
 
 A lane detection system built for deployment in an RV, assisting with real-time lane tracking and departure alerts. It supports both traditional computer vision and deep learning approaches, depending on available compute.
+> This repository contains the lane detection module I developed as part of a larger RV automation project.  
+> The full system integrated multiple subsystems (sensors, control logic, UI), but this repo highlights my contributions in computer vision and deep learning for real-time lane tracking.
 
 - **Traditional CV Mode**  
   Uses OpenCV techniques like Canny edge detection, perspective transforms, and Hough lines for efficient lane detection.
